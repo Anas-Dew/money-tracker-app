@@ -6,7 +6,8 @@ export default function Signup(props) {
     setlog({ ...log, [e.target.name]: e.target.value })
   }
 
-  const host = 'http://localhost:5000'
+  // const host = 'http://localhost:5000'
+  const host = 'https://money-tracker-api.vercel.app'
   const navigate = useNavigate();
 
   const signupUser = async (e) => {

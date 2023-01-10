@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import NoteContext from './noteContext'
 const NoteState = (props) => {
-  // const host = 'https://cloud-notebook-six.vercel.app'
-  const host = 'http://localhost:5000'
+  const host = 'https://money-tracker-api.vercel.app'
+  // const host = 'http://localhost:5000'
 
   const fetchAllNotes = async () => {
     const response = await fetch(`${host}/api/notes/fetch-all-notes`, {

@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 
 export default function Account() {
   const user = useContext(noteContext)
-  const host = 'http://localhost:5000'
+  // const host = 'http://localhost:5000'
+  const host = 'https://money-tracker-api.vercel.app'
   const navigate = useNavigate();
   const { GetUser, UserData } = user
   useEffect(() => {
