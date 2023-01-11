@@ -10,7 +10,7 @@ const port = 5000
 
 // Available Routes 
 app.use('/api/', require('./routes/auth.js'))
-app.use('/api/notes', require('./routes/notes.js'))
+app.use('/api/transactions', require('./routes/transactions.js'))
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

@@ -4,7 +4,7 @@ const NoteState = (props) => {
   const host = process.env.REACT_APP_API_URL || 'http://localhost:5000'
 
   const fetchAllNotes = async () => {
-    const response = await fetch(`${host}/api/notes/fetch-all-notes`, {
+    const response = await fetch(`${host}/api/transactions/fetch-all-transactions`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -14,12 +14,43 @@ const NoteState = (props) => {
     });
     const allFetchedNotes = await response.json()
     setnote(allFetchedNotes)
-    // console.log(allFetchedNotes);
-    // props.showAlert('Hi!', 'Welcome back!', 'success')
-    // UpdateExpense();
+
     GetUser();
   }
 
+  const filterBy = async (filter) => {
+    const response = await fetch(`${host}/api/transactions/filter-transactions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': localStorage.getItem('token'),
+      },
+      mode: 'cors',
+      body: JSON.stringify({ "filter":  filter})
+    });
+    const allFetchedNotes = await response.json()
+    setnote(allFetchedNotes)
+
+    GetUser();
+  }
+
+  const filterByDate = async (date) => {
+    const response = await fetch(`${host}/api/transactions/filter-transactions-by-date`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': localStorage.getItem('token'),
+      },
+      mode: 'cors',
+      body: JSON.stringify({ "date":  date})
+    });
+    const allFetchedNotes = await response.json()
+    setnote(allFetchedNotes)
+
+    GetUser();
+  }
+
+  
   const notes = []
 
 
@@ -27,7 +58,7 @@ const NoteState = (props) => {
   // ADD A NOTE
   const addNote = async (title, description, tags, friends, category) => {
 
-    const response = await fetch(`${host}/api/notes/add-note`, {
+    const response = await fetch(`${host}/api/transactions/add-transaction`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +73,7 @@ const NoteState = (props) => {
   }
   // DELETE A NOTE
   const deleteNote = async (id) => {
-    const response = await fetch(`${host}/api/notes/delete/${id}`, {
+    const response = await fetch(`${host}/api/transactions/delete/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +86,7 @@ const NoteState = (props) => {
   }
   // UPDATE A NOTE
   const updateNote = async (id, title, description, tags, friends, category) => {
-    const response = await fetch(`${host}/api/notes/update/${id}`, {
+    const response = await fetch(`${host}/api/transactions/update/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +111,7 @@ const NoteState = (props) => {
   // UPDATE EXPENSE
   const UpdateExpense = async () => {
     let total_expense = 0;
-    const response = await fetch(`${host}/api/notes/fetch-all-notes`, {
+    const response = await fetch(`${host}/api/transactions/fetch-all-transactions`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -120,7 +151,7 @@ const NoteState = (props) => {
   
   const [UserData, setUserData] = useState({})
   return (
-    < NoteContext.Provider value={{ UserData, GetUser,Expense, UpdateExpense, note, setnote, addNote, deleteNote, updateNote, fetchAllNotes }}>
+    < NoteContext.Provider value={{ filterByDate, filterBy,UserData, GetUser,Expense, UpdateExpense, note, setnote, addNote, deleteNote, updateNote, fetchAllNotes }}>
       {props.children}
     </NoteContext.Provider >
   )

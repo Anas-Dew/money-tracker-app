@@ -4,16 +4,56 @@ const fetchuser = require('../middleware/fetchuser');
 const Notes = require('../models/Notes')
 const { body, validationResult } = require('express-validator');
 
-// ROUTE : 1 -> GET ALL NOTES OF LOGGED IN USER (GET). LOGGED IN REQUIRED
-router.get('/fetch-all-notes', fetchuser, async (req, res) => {
+function filterJsonArrayBy(jsonArray, category) {
+    return jsonArray
+        .filter(item => item.category.includes(category))
+}
+
+function filterJsonArrayByDate(jsonArray, date) {
+
+    return jsonArray
+        .filter(function checkAdult(item) {
+    
+            let datea = new Date(parseInt(item.date)).toLocaleDateString("en-US");
+            // m,d,y
+            let strformatarr = date.split('-')
+            var strformat = `${strformatarr[1]}/${strformatarr[2]}/${strformatarr[0]}`
+            
+            let extrazero = datea.split('/')
+            if (extrazero[0].length === 1) {
+                datea = `0${extrazero[0]}/${extrazero[1]}/${extrazero[2]}`
+            }
+            
+            console.log(datea);
+            console.log(strformat);
+            if (datea === strformat) {
+                return item;
+            }
+
+        })
+}
+
+router.get('/fetch-all-transactions', fetchuser, async (req, res) => {
     const notes = await Notes.find({ user: req.user.id });
     res.json(notes)
 })
 
-// ROUTE : 2 -> ADD A NOTE FROM LOGGED IN USER (POST). LOGGED IN REQUIRED
-router.post('/add-note', fetchuser, [
+router.post('/filter-transactions', fetchuser, async (req, res) => {
+    const notes = await Notes.find({ user: req.user.id });
+    const { filter } = req.body
+    let temp = filterJsonArrayBy(notes, filter)
+    res.json(temp)
+})
+
+router.post('/filter-transactions-by-date', fetchuser, async (req, res) => {
+    const notes = await Notes.find({ user: req.user.id });
+    const { date } = req.body
+    let temp = filterJsonArrayByDate(notes, date)
+    res.json(temp)
+})
+
+router.post('/add-transaction', fetchuser, [
     body('title', 'Title must be added').isLength({ min: 1 }),
-    // body('descript', 'Email is invalid!').isEmail(),
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -33,7 +73,7 @@ router.post('/add-note', fetchuser, [
     }
 
 })
-// ROUTE : 3 -> UPDATE A NOTE FROM LOGGED IN USER (POST). LOGGED IN REQUIRED
+
 router.put('/update/:id', fetchuser, async (req, res) => {
     const { title, description, tags, friends } = req.body
 
@@ -44,7 +84,7 @@ router.put('/update/:id', fetchuser, async (req, res) => {
     if (friends) { newNote.friends = friends }
     if (category) { newNote.category = category }
 
-    let note = await Notes.findById(req.params.id) // params is for selecting from :id
+    let note = await Notes.findById(req.params.id)
     if (!note) { return res.status(404).send('Not found') }
 
     if (note.user.toString() !== req.user.id) {
@@ -54,11 +94,11 @@ router.put('/update/:id', fetchuser, async (req, res) => {
     res.send(note)
 
 })
-// ROUTE : 4 -> DELETE A NOTE (DELETE). LOGGED IN REQUIRED
+
 router.delete('/delete/:id', fetchuser, async (req, res) => {
 
 
-    let note = await Notes.findById(req.params.id) // params is for selecting from :id
+    let note = await Notes.findById(req.params.id)
     if (!note) { return res.status(404).send('Not found') }
 
     if (note.user.toString() !== req.user.id) {

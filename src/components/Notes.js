@@ -3,6 +3,8 @@ import noteContext from '../context/noteContext'
 import NoNotes from './NoNotes'
 import Noteitems from './Noteitems'
 import { useNavigate } from 'react-router-dom'
+import { Filter } from './Filter'
+
 export default function Notes(props) {
     const navigate = useNavigate();
     const notes = useContext(noteContext)
@@ -77,16 +79,7 @@ export default function Notes(props) {
             <h2 className='my-3 mx-1'>Transactions</h2>
             {/* style={{ width: "80%", display: "flex", alignSelf: "center", justifyContent: "center" }} */}
 
-            {/* <button style={{ width: "80%", display: "flex", alignSelf: "center", justifyContent: "center" }} class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Filters
-            </button>
-
-            <div class="collapse m-3" id="collapseExample">
-                <div class="card card-body">
-                <button style={{ width: "80%", display: "flex", alignSelf: "center", justifyContent: "center" }} type="button" class="btn btn-dark mb-3">By Date</button>
-                <button  style={{ width: "80%", display: "flex", alignSelf: "center", justifyContent: "center" }} type="button" class="btn btn-dark">By Tag</button>
-                </div>
-            </div> */}
+            <Filter/>
 
             <div className='row'>
                 
