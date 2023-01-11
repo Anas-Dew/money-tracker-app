@@ -12,11 +12,11 @@ export default function Noteitems(props) {
 
         const emotion_filters = new Map()
         // First item in ARR is text color and second one is BackgroundColor of Card.
-        emotion_filters.set('class', ['black', 'yellow'])
-        emotion_filters.set('love', ['white', 'red'])
-        emotion_filters.set('work', ['white', 'blue'])
+        emotion_filters.set('bill', ['black', 'yellow'])
+        emotion_filters.set('party', ['white', 'red'])
+        emotion_filters.set('shopping', ['white', 'blue'])
 
-        const emotion_filters_key = ['love', 'class', 'work']
+        const emotion_filters_key = ['party', 'bill', 'shopping']
 
         emotion_filters_key.map((filter) => {
             if (filter === thatTag.toLowerCase()){

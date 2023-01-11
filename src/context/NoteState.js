@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import NoteContext from './noteContext'
 const NoteState = (props) => {
-  const host = 'https://money-tracker-api.vercel.app'
-  // const host = 'http://localhost:5000'
+  const host = process.env.REACT_APP_API_URL || 'http://localhost:5000'
 
   const fetchAllNotes = async () => {
     const response = await fetch(`${host}/api/notes/fetch-all-notes`, {
@@ -26,7 +25,7 @@ const NoteState = (props) => {
 
   const [note, setnote] = useState(notes)
   // ADD A NOTE
-  const addNote = async (title, description, tags, friends) => {
+  const addNote = async (title, description, tags, friends, category) => {
 
     const response = await fetch(`${host}/api/notes/add-note`, {
       method: 'POST',
@@ -34,7 +33,7 @@ const NoteState = (props) => {
         'Content-Type': 'application/json',
         'authToken': localStorage.getItem('token')
       },
-      body: JSON.stringify({ title, description, tags, friends })
+      body: JSON.stringify({ title, description, tags, friends, category })
     });
 
     const noteNEW = await response.json();
@@ -55,14 +54,14 @@ const NoteState = (props) => {
     UpdateExpense();
   }
   // UPDATE A NOTE
-  const updateNote = async (id, title, description, tags, friends) => {
+  const updateNote = async (id, title, description, tags, friends, category) => {
     const response = await fetch(`${host}/api/notes/update/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'authToken': localStorage.getItem('token')
       },
-      body: JSON.stringify({ title, description, tags, friends })
+      body: JSON.stringify({ title, description, tags, friends, category })
     });
     for (let index = 0; index < note.length; index++) {
       const element = note[index];
@@ -70,6 +69,8 @@ const NoteState = (props) => {
         element.title = title;
         element.description = description;
         element.tags = tags;
+        element.category = category;
+        element.friends = friends;
       }
 
     }
@@ -91,7 +92,9 @@ const NoteState = (props) => {
 
     for (let index = 0; index < allFetchedTransactions.length; index++) {
       const element = allFetchedTransactions[index].tags;
-      total_expense += parseFloat(element)
+      const friends = allFetchedTransactions[index].friends;
+      const frenlen = friends.split(",")
+      total_expense += parseFloat(element) / frenlen.length
     }
     setExpense(total_expense)
   }

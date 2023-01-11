@@ -32,7 +32,7 @@ export default function Notes(props) {
             "title": enote.etitle,
             "description": enote.edescription,
             "tags": enote.etags,
-            "friends" : enote.efriends,
+            "friends": enote.efriends,
             "date": "1665557259617",
             "__v": 0
         }
@@ -55,21 +55,17 @@ export default function Notes(props) {
     function emotion_filter(thatTag) {
         var stylies_global = ['black', 'white']
         const noteCard = document.getElementById('note-card')
-        // console.log(thatTag);
         const emotion_filters = new Map()
         // First item in ARR is text color and second one is BackgroundColor of Card.
-        emotion_filters.set('class', ['black', '#efef00'])
-        emotion_filters.set('love', ['white', '#ac0202'])
-        emotion_filters.set('work', ['white', '#0000a7'])
+        emotion_filters.set('bill', ['black', '#efef00'])
+        emotion_filters.set('party', ['white', '#ac0202'])
+        emotion_filters.set('shopping', ['white', '#0000a7'])
 
-        const emotion_filters_key = ['love', 'class', 'work']
+        const emotion_filters_key = ['party', 'bill', 'shopping']
 
         emotion_filters_key.map((filter) => {
             if (filter == thatTag.toLowerCase()) {
                 let stylies = emotion_filters.get(filter)
-                // noteCard.style.color = stylies[0]
-                // noteCard.style.backgroundColor = stylies[1];
-                // console.log(stylies);
                 stylies_global = stylies
             }
 
@@ -79,10 +75,24 @@ export default function Notes(props) {
     return (
         <>
             <h2 className='my-3 mx-1'>Transactions</h2>
+            {/* style={{ width: "80%", display: "flex", alignSelf: "center", justifyContent: "center" }} */}
+
+            {/* <button style={{ width: "80%", display: "flex", alignSelf: "center", justifyContent: "center" }} class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Filters
+            </button>
+
+            <div class="collapse m-3" id="collapseExample">
+                <div class="card card-body">
+                <button style={{ width: "80%", display: "flex", alignSelf: "center", justifyContent: "center" }} type="button" class="btn btn-dark mb-3">By Date</button>
+                <button  style={{ width: "80%", display: "flex", alignSelf: "center", justifyContent: "center" }} type="button" class="btn btn-dark">By Tag</button>
+                </div>
+            </div> */}
+
             <div className='row'>
+                
                 {note.length === 0 && <NoNotes />}
                 {note.map((note) => {
-                    const note_style = emotion_filter(note.tags)
+                    const note_style = emotion_filter(note.category)
                     return <Noteitems key={note._id} note={note} note_style={note_style} updateNote={updateNoteUi} />
                 })}
             </div>
@@ -103,6 +113,7 @@ export default function Notes(props) {
                                     <label htmlFor="etitle" className="form-label">Title</label>
                                     <input className="form-control" id="etitle" name='etitle' placeholder="Write a title..." value={enote.etitle} onChange={onChange} />
                                 </div>
+                                
                                 <div className="mb-3">
                                     <label htmlFor="edescription" className="form-label">Description</label>
                                     <textarea className="form-control" id="edescription" name='edescription' rows="3" placeholder='It was a starting of spring...' value={enote.edescription} onChange={onChange}></textarea>

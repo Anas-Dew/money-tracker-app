@@ -24,6 +24,10 @@ const NotesSchema = new mongoose.Schema({
     date : {
         type: String,
         default: Date.now
+    },
+    category : {
+        type: String,
+        required: false
     }
 })
 

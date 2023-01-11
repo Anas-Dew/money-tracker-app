@@ -1,8 +1,7 @@
 import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 export default function Login(props) {
-    // const host = 'http://localhost:5000'
-    const host = 'https://money-tracker-api.vercel.app'
+    const host = process.env.REACT_APP_API_URL || 'http://localhost:5000'
     const navigate = useNavigate();
     const loginUser = async (e) => {
         e.preventDefault()

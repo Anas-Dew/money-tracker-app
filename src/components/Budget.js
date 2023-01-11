@@ -7,6 +7,6 @@ export const Budget = () => {
 
     UpdateExpense();
     return (
-        <h2 style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>Budget Remaining : ${UserData.expense_budget - Expense}</h2>
+        <h2 style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>Budget Remaining : ${UserData.expense_budget - Expense.toFixed(2) || "$$"}</h2>
     )
 }

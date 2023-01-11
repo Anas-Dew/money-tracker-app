@@ -8,7 +8,6 @@ const { body, validationResult } = require('express-validator');
 router.get('/fetch-all-notes', fetchuser, async (req, res) => {
     const notes = await Notes.find({ user: req.user.id });
     res.json(notes)
-    // res.send('Hii from notes')
 })
 
 // ROUTE : 2 -> ADD A NOTE FROM LOGGED IN USER (POST). LOGGED IN REQUIRED
@@ -21,9 +20,9 @@ router.post('/add-note', fetchuser, [
         return res.status(400).json({ errors: errors.array() });
     }
     try {
-        const { title, description, tags, friends } = req.body
+        const { title, description, tags, friends, category } = req.body
         const note = new Notes({
-            title, description, tags, user: req.user.id, friends
+            title, description, tags, user: req.user.id, friends, category
         })
 
         const savedNote = await note.save()
@@ -43,6 +42,7 @@ router.put('/update/:id', fetchuser, async (req, res) => {
     if (description) { newNote.description = description }
     if (tags) { newNote.tags = tags }
     if (friends) { newNote.friends = friends }
+    if (category) { newNote.category = category }
 
     let note = await Notes.findById(req.params.id) // params is for selecting from :id
     if (!note) { return res.status(404).send('Not found') }
@@ -56,7 +56,7 @@ router.put('/update/:id', fetchuser, async (req, res) => {
 })
 // ROUTE : 4 -> DELETE A NOTE (DELETE). LOGGED IN REQUIRED
 router.delete('/delete/:id', fetchuser, async (req, res) => {
-    
+
 
     let note = await Notes.findById(req.params.id) // params is for selecting from :id
     if (!note) { return res.status(404).send('Not found') }
